@@ -20,7 +20,7 @@ public:
 	// カメラ行列の設定・カメラ行列からビュー行列を生成
 	virtual void SetCameraMatrix(const DirectX::SimpleMath::Matrix& mCam) { m_mCam = mCam; m_mView = m_mCam.Invert(); }
 
-	// 射影行列の設定
+	// 射影行列の設定									//↓デフォルト引数：予め設定しておくと引数を入れなかった場合自動的に設定していた引数を入れる
 	void SetProjectionMatrix(float fov, float maxRange = 2000, float minRange = 0.01f, float aspectRatio = 0.0f);
 	void SetProjectionMatrix(const DirectX::SimpleMath::Matrix& rProj);
 

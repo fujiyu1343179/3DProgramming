@@ -1,5 +1,8 @@
 ﻿#include "main.h"
 
+#include"Hamu.h"
+#include"Terrain.h"
+
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 // エントリーポイント
 // アプリケーションはこの関数から進行する
@@ -64,6 +67,40 @@ void Application::PreUpdate()
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 void Application::Update()
 {
+	//カメラ行列の更新
+	{
+		//大きさ行列
+		Math::Matrix _mScale = Math::Matrix::CreateScale(1.0f);
+
+		//移動行列
+		Math::Matrix _mTrans = Math::Matrix::CreateTranslation(0, 6, -5);
+
+		//回転行列
+		Math::Matrix _mRotationX = Math::Matrix::CreateRotationX//X軸
+									(DirectX::XMConvertToRadians(45));
+		static float ang = 0;
+		Math::Matrix _mRotationY = Math::Matrix::CreateRotationY//Y軸
+									(DirectX::XMConvertToRadians(ang));
+		//ang += 0.5f;
+
+		//カメラのワールド行列を作成し、適応させる
+		//行列の親子関係//親を合成(親の情報を持ってくる)追従カメラ
+		Math::Matrix _mWorld = (_mScale * _mRotationX * _mTrans * _mRotationY);	//行列の合成
+		m_spCamera->SetCameraMatrix(_mWorld);								
+	}
+	
+	//ゲームオブジェクトの一括更新
+	for (std::shared_ptr<KdGameObject> gameObj : m_GameObjList)
+	{
+		gameObj->Update();
+	}
+
+	/*
+	//ハム太郎
+	{
+		m_spHamu->Update();
+	}
+	*/
 }
 
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
@@ -100,6 +137,7 @@ void Application::KdPostDraw()
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 void Application::PreDraw()
 {
+	m_spCamera->SetToShader();
 }
 
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
@@ -119,6 +157,22 @@ void Application::Draw()
 	// 陰影のあるオブジェクト(不透明な物体や2Dキャラ)はBeginとEndの間にまとめてDrawする
 	KdShaderManager::Instance().m_StandardShader.BeginLit();
 	{
+		//全てのゲームオブジェクトの一括描画	↓(範囲ベースfor文)
+		for (std::shared_ptr<KdGameObject> gameObj : m_GameObjList)
+		{
+			gameObj->DrawLit();
+		}
+
+		/*
+		//ハム太郎描画
+		{
+			m_spHamu->DrawLit();
+		}
+		//地形の描画
+		{
+			m_spTerrain->DrawLit();
+		}
+		*/
 	}
 	KdShaderManager::Instance().m_StandardShader.EndLit();
 
@@ -178,9 +232,9 @@ bool Application::Init(int w, int h)
 	// フルスクリーン確認
 	//===================================================================
 	bool bFullScreen = false;
-	if (MessageBoxA(m_window.GetWndHandle(), "フルスクリーンにしますか？", "確認", MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) == IDYES) {
-		bFullScreen = true;
-	}
+	//if (MessageBoxA(m_window.GetWndHandle(), "フルスクリーンにしますか？", "確認", MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) == IDYES) {
+	//	bFullScreen = true;
+	//}
 
 	//===================================================================
 	// Direct3D初期化
@@ -221,8 +275,33 @@ bool Application::Init(int w, int h)
 	//===================================================================
 	KdAudioManager::Instance().Init();
 
-	//テスト(削除)
-	test = 10;
+	//===================================================================
+	// カメラ初期化
+	//===================================================================
+
+	m_spCamera = std::make_shared<KdCamera>();
+	
+	//===================================================================
+	// キャラクター初期化
+	//===================================================================
+
+	std::shared_ptr<Hamu> _spHamu;
+	_spHamu = std::make_shared<Hamu>();
+	_spHamu->Init();
+
+	//ゲームオブジェクトのリストにハム太郎を登録
+	m_GameObjList.push_back(_spHamu);
+
+	//===================================================================
+	// 地形初期化
+	//===================================================================
+	
+	std::shared_ptr<Terrain>_spTerrain;
+	_spTerrain = std::make_shared<Terrain>();
+	_spTerrain->Init();
+
+	// ゲームオブジェクトのリストに地形を登録
+	m_GameObjList.push_back(_spTerrain);
 
 	return true;
 }

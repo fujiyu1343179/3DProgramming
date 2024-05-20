@@ -20,7 +20,7 @@ public:
 
 	// 生成される全てに共通するパラメータに対する初期化のみ
 	virtual void Init() {}
-
+	
 	virtual void PreUpdate() {}
 	virtual void Update() {}
 	virtual void PostUpdate() {}

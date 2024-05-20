@@ -4,6 +4,7 @@
 // アプリケーションクラス
 //	APP.～ でどこからでもアクセス可能
 //============================================================
+
 class Application
 {
 // メンバ
@@ -51,8 +52,20 @@ private:
 	// ゲーム終了フラグ trueで終了する
 	bool		m_endFlag = false;
 
-	//テスト(削除)
-	int test;
+	//カメラ
+	std::shared_ptr<KdCamera> m_spCamera = nullptr;
+	//		↑int* camera;
+	//三つ合わせてスマートポインタ：deleteを書かなくていい
+
+	//ゲーム中に存在する全てのオブジェクト
+	std::vector<std::shared_ptr<KdGameObject>> m_GameObjList;//配列
+
+	/*
+	//ハム太郎のオブジェクト
+	std::shared_ptr<KdGameObject> m_spHamu = nullptr;
+	//地形オブジェクト
+	std::shared_ptr<KdGameObject> m_spTerrain = nullptr;
+	*/
 
 //=====================================================
 // シングルトンパターン
