@@ -53,6 +53,9 @@ private:
 
 	std::shared_ptr<KdCamera>			m_spCamera		= nullptr;
 
+	std::vector<std::shared_ptr<KdGameObject>> m_GameObjList;
+	//std::shared_ptr<KdModelData> m_spModel = nullptr;
+
 //=====================================================
 // シングルトンパターン
 //=====================================================

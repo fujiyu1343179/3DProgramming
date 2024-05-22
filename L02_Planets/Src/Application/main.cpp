@@ -1,5 +1,7 @@
 ﻿#include "main.h"
 
+#include"Sun.h"
+
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 // エントリーポイント
 // アプリケーションはこの関数から進行する
@@ -64,6 +66,22 @@ void Application::PreUpdate()
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 void Application::Update()
 {
+	//カメラ行列の更新
+	{
+		//大きさ行列
+		Math::Matrix _mScale = Math::Matrix::CreateScale(1.0f);
+
+		//移動行列
+		Math::Matrix _mTrans = Math::Matrix::CreateTranslation(0, 0, -5);
+
+		//回転行列
+		Math::Matrix _mRotation = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(0));
+		static float ang = 0;
+
+		//カメラのワールド行列を作成
+		Math::Matrix _mWorld = (_mScale * _mRotation * _mTrans);
+		m_spCamera->SetCameraMatrix(_mWorld);
+	}
 }
 
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
@@ -120,6 +138,12 @@ void Application::Draw()
 	// 陰影のあるオブジェクト(不透明な物体や2Dキャラ)はBeginとEndの間にまとめてDrawする
 	KdShaderManager::Instance().m_StandardShader.BeginLit();
 	{
+		//KdShaderManager::Instance().m_StandardShader.DrawModel(*m_spModel);
+		
+		for (std::shared_ptr<KdGameObject> gameObj : m_GameObjList)
+		{
+			gameObj->DrawLit();
+		}
 	}
 	KdShaderManager::Instance().m_StandardShader.EndLit();
 
@@ -179,9 +203,9 @@ bool Application::Init(int w, int h)
 	// フルスクリーン確認
 	//===================================================================
 	bool bFullScreen = false;
-	if (MessageBoxA(m_window.GetWndHandle(), "フルスクリーンにしますか？", "確認", MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) == IDYES) {
-		bFullScreen = true;
-	}
+	//if (MessageBoxA(m_window.GetWndHandle(), "フルスクリーンにしますか？", "確認", MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) == IDYES) {
+	//	bFullScreen = true;
+	//}
 
 	//===================================================================
 	// Direct3D初期化
@@ -226,6 +250,17 @@ bool Application::Init(int w, int h)
 	// カメラ初期化
 	//===================================================================
 	m_spCamera	= std::make_shared<KdCamera>();
+	
+	//===================================================================
+	// 初期化
+	//===================================================================
+
+	//m_spModel = std::make_shared<KdModelData>();
+	//m_spModel->Load("Asset/Data/LessonData/Planets/sun.gltf");
+
+	std::shared_ptr<Sun> sun;
+	sun = std::make_shared<Sun>();
+	m_GameObjList.push_back(sun);
 
 	return true;
 }
