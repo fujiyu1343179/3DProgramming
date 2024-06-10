@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+class Earth;
+
 class Moon :public KdGameObject
 {
 public:
@@ -13,4 +15,8 @@ public:
 private:
 
 	std::shared_ptr<KdModelData>m_spModel = nullptr;
+
+	std::shared_ptr<Earth> m_earth;
+
+	Math::Vector3 m_pos;
 };

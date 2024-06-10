@@ -148,6 +148,7 @@
     <ClInclude Include="..\Library\tinygltf\tiny_gltf.h" />
     <ClInclude Include="Src\Application\Earth.h" />
     <ClInclude Include="Src\Application\main.h" />
+    <ClInclude Include="Src\Application\Moon.h" />
     <ClInclude Include="Src\Application\Sun.h" />
     <ClInclude Include="Src\Framework\Direct3D\KdMaterial.h" />
     <ClInclude Include="Src\Framework\Direct3D\Polygon\KdPolygon.h" />
@@ -188,6 +189,7 @@
   <ItemGroup>
     <ClCompile Include="Src\Application\Earth.cpp" />
     <ClCompile Include="Src\Application\main.cpp" />
+    <ClCompile Include="Src\Application\Moon.cpp" />
     <ClCompile Include="Src\Application\Sun.cpp" />
     <ClCompile Include="Src\Framework\Direct3D\KdMaterial.cpp">
       <SubType>

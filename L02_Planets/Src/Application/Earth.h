@@ -10,7 +10,11 @@ public:
 	void Update()override;
 	void DrawLit()override;
 
+	//Math::Matrix& GetMatrix() const { return m_mWorld; }
+
 private:
 
 	std::shared_ptr<KdModelData>m_spModel = nullptr;
+
+	Math::Vector3 m_pos;
 };

@@ -1,6 +1,8 @@
 ﻿#include "main.h"
 
 #include"Sun.h"
+#include"Earth.h"
+#include"Moon.h"
 
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 // エントリーポイント
@@ -18,6 +20,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_  HINSTANCE, _In_ LPSTR , _In_ int)
 
 		return 0;
 	}
+
 
 	// mbstowcs_s関数で日本語対応にするために呼ぶ
 	setlocale(LC_ALL, "japanese");
@@ -72,7 +75,7 @@ void Application::Update()
 		Math::Matrix _mScale = Math::Matrix::CreateScale(1.0f);
 
 		//移動行列
-		Math::Matrix _mTrans = Math::Matrix::CreateTranslation(0, 0, -5);
+		Math::Matrix _mTrans = Math::Matrix::CreateTranslation(0, 0, -8);
 
 		//回転行列
 		Math::Matrix _mRotation = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(0));
@@ -81,6 +84,11 @@ void Application::Update()
 		//カメラのワールド行列を作成
 		Math::Matrix _mWorld = (_mScale * _mRotation * _mTrans);
 		m_spCamera->SetCameraMatrix(_mWorld);
+	}
+
+	for (std::shared_ptr<KdGameObject> gameObj : m_GameObjList)
+	{
+		gameObj->Update();
 	}
 }
 
@@ -261,6 +269,14 @@ bool Application::Init(int w, int h)
 	std::shared_ptr<Sun> sun;
 	sun = std::make_shared<Sun>();
 	m_GameObjList.push_back(sun);
+
+	std::shared_ptr<Earth> earth;
+	earth = std::make_shared<Earth>();
+	m_GameObjList.push_back(earth);
+
+	std::shared_ptr<Moon> moon;
+	moon = std::make_shared<Moon>();
+	m_GameObjList.push_back(moon);
 
 	return true;
 }

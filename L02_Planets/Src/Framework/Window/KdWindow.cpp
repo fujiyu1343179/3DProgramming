@@ -25,7 +25,7 @@ bool KdWindow::Create(int clientWidth, int clientHeight, std::string_view titleN
 	wc.hIcon = LoadIcon(nullptr, IDI_APPLICATION);			// ラージアイコン
 	wc.hIconSm = LoadIcon(nullptr, IDI_APPLICATION);		// スモールアイコン 
 	wc.hCursor = LoadCursor(nullptr, IDC_ARROW);			// マウスカーソル
-	wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);	// 背景色 
+	wc.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);	// 背景色 
 	wc.lpszMenuName = nullptr;								// メインメニュー名
 	wc.lpszClassName = wndClsName.c_str();					// ウィンドウクラス名
 

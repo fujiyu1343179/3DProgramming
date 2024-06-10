@@ -186,6 +186,9 @@
     <ClInclude Include="Src\Application\Earth.h">
       <Filter>Src\Application</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Moon.h">
+      <Filter>Src\Application</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -294,6 +297,9 @@
       <Filter>Src\Application</Filter>
     </ClCompile>
     <ClCompile Include="Src\Application\Earth.cpp">
+      <Filter>Src\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Moon.cpp">
       <Filter>Src\Application</Filter>
     </ClCompile>
   </ItemGroup>
